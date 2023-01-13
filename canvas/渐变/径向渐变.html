@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>径向渐变</title>
+    <style type="text/css">
+      * {
+        margin: 0px;
+        padding: 0px;
+      }
+      canvas {
+        margin: auto;
+        background-color: #ccc;
+        /* canvas一般不在style中设置宽高，会造成放大或缩小 */
+        /* width: 600px;
+            height: 400px; */
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="600px" height="400px"></canvas>
+  </body>
+  <script>
+    //canvas默认宽高是300*150
+    let myCanvas = document.querySelector("#myCanvas");
+    if (myCanvas.getContext) {
+      console.log("当前浏览器不支持canvas,请下载最新的浏览器");
+    }
+    //获取一个 绘制上下文
+    let ctx = myCanvas.getContext("2d");
+
+    //绘制矩形
+    let index = 0;
+    let radiaGradient = ctx.createRadialGradient(300, 200, 0, 300, 200, 100);
+    radiaGradient.addColorStop(0, "red");
+    radiaGradient.addColorStop(0.3, "#ffcccc");
+    radiaGradient.addColorStop(1, "blue");
+    ctx.fillStyle = radiaGradient;
+    ctx.fillRect(0, 0, 600, 400);
+
+    requestAnimationFrame(render);
+  </script>
+</html>

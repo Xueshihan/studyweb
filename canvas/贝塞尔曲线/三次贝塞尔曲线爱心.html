@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>三次贝塞尔曲线爱心</title>
+    <style type="text/css">
+      * {
+        margin: 0px;
+        padding: 0px;
+      }
+      canvas {
+        margin: auto;
+        background-color: #ccc;
+        /* canvas一般不在style中设置宽高，会造成放大或缩小 */
+        /* width: 600px;
+            height: 400px; */
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="600px" height="400px"></canvas>
+  </body>
+  <script>
+    //canvas默认宽高是300*150
+    let myCanvas = document.querySelector("#myCanvas");
+    if (myCanvas.getContext) {
+      console.log("当前浏览器不支持canvas,请下载最新的浏览器");
+    }
+    //获取一个 绘制上下文
+    let ctx = myCanvas.getContext("2d");
+    ctx.beginPath();
+    ctx.moveTo(300, 200);
+    ctx.bezierCurveTo(350, 150, 400, 220, 300, 300);
+    ctx.bezierCurveTo(200, 220, 250, 150, 300, 200);
+    ctx.stroke();
+    ctx.fillStyle = "red";
+    console.log(ctx);
+    ctx.fill();
+    ctx.closePath();
+
+    // //清空矩形区域
+    // context.clearRect(250, 150, 150, 20);
+    // //在做大部分反复的特效的时候，基本上都需要用到这个清空的方法
+  </script>
+</html>
