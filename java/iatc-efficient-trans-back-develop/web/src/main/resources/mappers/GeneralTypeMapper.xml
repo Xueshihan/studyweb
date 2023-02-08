@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.iatc.web.mapper.GeneralTypeMapper" >
+    <resultMap id="BaseResultMap" type="cn.iatc.database.entity.GeneralType" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="base_type_id" property="baseTypeId" jdbcType="BIGINT" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="enabled_status" property="enabledStatus" jdbcType="SMALLINT" />
+        <result column="created_time" property="createdTime" javaType="java.util.Date" />
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date" />
+
+        <!--  association 关联的方法不能用orm，需要用语句查      -->
+        <association property="baseElec" javaType="cn.iatc.database.entity.BaseElec" column="base_type_id"
+                     select="cn.iatc.web.mapper.BaseElecMapper.findById"/>
+    </resultMap>
+
+    <sql id="baseSql">
+        id, name, code, base_type_id, sort, enabled_status, created_time, updated_time
+    </sql>
+
+    <sql id="table_general_type">
+       <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_GENERAL_TYPE}]]>
+    </sql>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM <include refid="table_general_type"/> WHERE id=#{id}
+    </select>
+
+
+</mapper>

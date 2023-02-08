@@ -1,0 +1,25 @@
+# postgresql docker设置
+version: '3'
+services:
+  timescaledb:
+    image: timescale/timescaledb:latest-pg14
+    container_name: test_timescaledb
+    restart: always
+    environment:
+        - POSTGRES_USER=root
+        - POSTGRES_PASSWORD=root
+        - TZ=Asia/Shanghai
+    ports:
+      - 5438:5432
+    volumes:
+      - ${PWD}/postgres/data:/var/lib/postgresql/data # 数据库位置
+      - ${PWD}/postgres/archive:/archive  # 备份文件位置
+    networks:
+      -   iatc_network
+
+# 设置网段信息
+networks:
+#  需先创建一个网关
+  iatc_network:
+    external:
+      name:   iatc_network

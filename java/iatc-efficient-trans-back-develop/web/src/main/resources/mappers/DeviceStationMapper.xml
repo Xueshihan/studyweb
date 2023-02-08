@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.iatc.web.mapper.DeviceStationMapper" >
+    <resultMap id="BaseResultMap" type="cn.iatc.database.entity.DeviceStation" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="device_id" property="deviceId" jdbcType="BIGINT" />
+        <result column="station_id" property="stationId" jdbcType="BIGINT" />
+    </resultMap>
+
+
+</mapper>

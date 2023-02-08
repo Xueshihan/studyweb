@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN"  debug="false" monitorInterval="5">
+    <Properties>
+        <Property name="LOG_HOME">./logs</Property>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %p [%t-%T] %C.%M(%L) | %m%n</Property>
+        <!--   针对控制台输出颜色区分     -->
+        <Property name="LOG_FORMAT_CONSOLE" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight{%p} %red{[%t-%T]} %C.%M(%L) | %blue{%m%n}"></Property>
+        <!--   日志级别     -->
+        <Property name="LOG_LEVEL">INFO</Property>
+        <!--   文件最大数 每个文件最大10M     -->
+        <Property name="FILE_SIZE">10MB</Property>
+        <Property name="ROLLING_FILE_NAME">%d{HH}.%i</Property>
+        <!--   暂时不用，设置不好使     -->
+        <Property name="ROLLOVER_STRATEGY_MAX">5</Property>
+    </Properties>
+    <Appenders>
+        <!-- 控制台日志输出 -->
+        <Console name="console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout >
+                <Pattern>${LOG_FORMAT_CONSOLE}</Pattern>
+                <Charset>UTF-8</Charset>
+            </PatternLayout>
+            <Filters>
+                <!--在控制台只输出INFO及以上日志信息-->
+                <ThresholdFilter level="INFO" onMatch="ACCEPT"/>
+            </Filters>
+        </Console>
+
+        <!-- 调试日志记录，最多纪录7个文件 filePattern 设置区分时间跟这个字段有关，yyyy-MM-dd HH 按小时分-->
+<!--        <RollingFile name="debugLogs" fileName="${LOG_HOME}/debug/app_debugs.log"-->
+<!--                     filePattern="${LOG_HOME}/debug/%d{yyyy-MM-dd_HH}/app_debugs_${ROLLING_FILE_NAME}.log">-->
+<!--            <PatternLayout>-->
+<!--                <Pattern>${LOG_PATTERN}</Pattern>-->
+<!--                <Charset>UTF-8</Charset>-->
+<!--            </PatternLayout>-->
+<!--            <Filters>-->
+<!--                <ThresholdFilter level="DEBUG"/>-->
+<!--                <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>-->
+<!--            </Filters>-->
+<!--            <Policies>-->
+<!--                &lt;!&ndash;按照指定文件大小就进行封存，size:属性用来定义每个日志文件的大小。&ndash;&gt;-->
+<!--                <SizeBasedTriggeringPolicy size="${FILE_SIZE}"/>-->
+<!--                &lt;!&ndash;按周期性时间就进行封存，interval:属性用来指定多久滚动一次，默认是1hour。modulate=true:用来调整时间：比如现在是早上3am，interval是4，-->
+<!--                那么第一次滚动是在4am，接着是8am，12am...而不是7am。 &ndash;&gt;-->
+<!--                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>-->
+<!--            </Policies>-->
+<!--        </RollingFile>-->
+
+        <!-- 错误日志记录，最多纪录7个文件 -->
+        <RollingFile name="errorLogs" fileName="${LOG_HOME}/error/app_errors.log"
+                     filePattern="${LOG_HOME}/error/%d{yyyy-MM-dd_HH}/app_errors_${ROLLING_FILE_NAME}.log">
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+                <Charset>UTF-8</Charset>
+            </PatternLayout>
+            <Filters>
+                <!--   过滤waring及以上   -->
+                <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <Policies>
+                <!--按照指定文件大小就进行封存，size:属性用来定义每个日志文件的大小。-->
+                <SizeBasedTriggeringPolicy size="${FILE_SIZE}"/>
+                <!--按周期性时间就进行封存，interval:属性用来指定多久滚动一次，默认是1hour。modulate=true:用来调整时间：比如现在是早上3am，interval是4，
+                那么第一次滚动是在4am，接着是8am，12am...而不是7am。 -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <!-- 所有日志记录，最多纪录7个文件 -->
+        <RollingFile name="allLogs" fileName="${LOG_HOME}/all/app_alls.log"
+                     filePattern="${LOG_HOME}/all/%d{yyyy-MM-dd_HH}/app_alls_${ROLLING_FILE_NAME}.log">
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+                <Charset>UTF-8</Charset>
+            </PatternLayout>
+            <Policies>
+                <!--按照指定文件大小就进行封存，size:属性用来定义每个日志文件的大小。-->
+                <SizeBasedTriggeringPolicy size="${FILE_SIZE}"/>
+                <!--按周期性时间就进行封存，interval:属性用来指定多久滚动一次，默认是1hour。modulate=true:用来调整时间：比如现在是早上3am，interval是4，
+                那么第一次滚动是在4am，接着是8am，12am...而不是7am。 -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <Filters>
+                <!--在控制台只输出INFO及以上日志信息-->
+                <ThresholdFilter level="INFO" onMatch="ACCEPT"/>
+            </Filters>
+        </RollingFile>
+
+    </Appenders>
+    <Loggers>
+
+        <!--   控制台和其他文件输出什么级别日志     -->
+        <Root level="${LOG_LEVEL}">
+            <AppenderRef ref="console"/>
+<!--            <AppenderRef ref="debugLogs"/>-->
+            <AppenderRef ref="errorLogs"/>
+            <AppenderRef ref="allLogs"/>
+        </Root>
+
+        <logger name="druid.sql.Statement" level="debug"/>
+        <logger name="java.sql.Connection" level="debug"/>
+        <logger name="java.sql.Statement" level="debug"/>
+        <logger name="java.sql.PreparedStatement" level="debug"/>
+        <logger name="java.sql.ResultSet" level="debug"/>
+
+    </Loggers>
+</Configuration>

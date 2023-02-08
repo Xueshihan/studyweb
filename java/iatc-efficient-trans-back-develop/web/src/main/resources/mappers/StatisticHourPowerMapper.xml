@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.iatc.web.mapper.StatisticHourPowerMapper" >
+    <resultMap id="BaseResultMap" type="cn.iatc.database.entity.StatisticHourPower" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="station_id" property="stationId" jdbcType="BIGINT" />
+        <result column="phase" property="phase" jdbcType="SMALLINT" />
+        <result column="high_efficiency" property="highEfficiency" jdbcType="VARCHAR" />
+        <result column="low_efficiency" property="lowEfficiency" jdbcType="VARCHAR" />
+        <result column="active_power" property="activePower" jdbcType="VARCHAR" />
+        <result column="loss_power" property="lossPower" jdbcType="VARCHAR" />
+        <result column="year" property="year" jdbcType="INTEGER" />
+        <result column="month" property="month" jdbcType="INTEGER" />
+        <result column="day" property="day" jdbcType="INTEGER" />
+        <result column="hour" property="hour" jdbcType="INTEGER" />
+        <result column="enabled_status" property="enabledStatus" jdbcType="SMALLINT" />
+        <result column="created_time" property="createdTime" javaType="java.util.Date" />
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date" />
+    </resultMap>
+
+    <sql id="baseSql">
+        id, station_id, high_efficiency, low_efficiency, active_power,
+        loss_power, year, month, day, hour, enabled_status, created_time, updated_time
+    </sql>
+
+    <sql id="table_statistic_hour_power">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_STATISTIC_HOUR_POWER}]]>
+    </sql>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM <include refid="table_statistic_hour_power"/> WHERE id=#{id} and enabled_status=1
+    </select>
+
+    <select id="getMaxActivePower" parameterType="java.lang.Long" resultType="String">
+        SELECT MAX(CAST(active_power AS DECIMAL)) as maxFzsh FROM <include refid="table_statistic_hour_power"/> WHERE station_id=#{stationId} and enabled_status=1
+    </select>
+</mapper>

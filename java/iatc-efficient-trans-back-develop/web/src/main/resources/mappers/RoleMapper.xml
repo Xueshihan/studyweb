@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.iatc.web.mapper.RoleMapper" >
+    <resultMap id="BaseResultMap" type="cn.iatc.database.entity.Role" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="enabled_status" property="enabledStatus" jdbcType="SMALLINT" />
+        <result column="created_time" property="createdTime" javaType="java.util.Date" />
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date" />
+    </resultMap>
+
+    <sql id="baseSql">
+        id, name, type, remark, enabled_status, created_time, updated_time
+    </sql>
+
+    <sql id="table_role">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_ROLE}]]>
+    </sql>
+
+    <update id="updateRole">
+        UPDATE <include refid="table_role"/> SET name=#{name}, remark=#{remark} WHERE id=#{roleId}
+    </update>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM <include refid="table_role"/> WHERE id=#{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.iatc.web.mapper.UserMapper" >
+    <resultMap id="BaseResultMap" type="cn.iatc.database.entity.User" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="account" property="account" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="role_id" property="roleId" jdbcType="BIGINT" />
+        <result column="station_id" property="stationId" jdbcType="BIGINT" />
+        <result column="real_name" property="realName" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="salt" property="salt" jdbcType="VARCHAR" />
+        <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+        <result column="navigator" property="navigator" jdbcType="VARCHAR" />
+        <result column="last_login_ip" property="lastLoginIp" jdbcType="VARCHAR" />
+        <result column="last_login_time" property="lastLoginTime" javaType="java.util.Date" />
+        <result column="wrong_time" property="wrongTime" javaType="java.util.Date" />
+        <result column="wrong_num" property="wrongNum" jdbcType="INTEGER" />
+        <result column="lock_time" property="lockTime" javaType="java.util.Date" />
+        <result column="modify_time" property="modifyTime" javaType="java.util.Date" />
+        <result column="expire_time" property="expireTime" javaType="java.util.Date" />
+        <result column="enabled_status" property="enabledStatus" jdbcType="SMALLINT" />
+        <result column="created_time" property="createdTime" javaType="java.util.Date" />
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date" />
+
+        <association property="role" javaType="cn.iatc.database.entity.Role" column="role_id"
+                     select="cn.iatc.web.mapper.RoleMapper.findById"/>
+
+        <association property="station" javaType="cn.iatc.database.entity.Station" column="station_id"
+                     select="cn.iatc.web.mapper.StationMapper.findById"/>
+
+    </resultMap>
+
+    <sql id="baseSql">
+        id, account, password, role_id, station_id, real_name, phone, email, salt, uuid, navigator, last_login_ip, last_login_time,
+        wrong_time, wrong_num, lock_time, modify_time, expire_time, enabled_status, created_time, updated_time
+    </sql>
+
+    <sql id="table_user">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_USER}]]>
+    </sql>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM <include refid="table_user"/> WHERE id=#{id}
+    </select>
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.iatc.mqtt_server.mapper.StationRelationMapper" >
+    <resultMap id="BaseResultMap" type="cn.iatc.database.entity.StationRelation" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="cur_station_id" property="curStationId" jdbcType="BIGINT" />
+        <result column="upper_id" property="upperId" jdbcType="BIGINT" />
+        <result column="upper_id_set" property="upperIdSet" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="baseSql">
+        id, cur_station_id, upper_id, upper_id_set
+    </sql>
+
+    <sql id="table_station_relation">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_STATION_RELATION}]]>
+    </sql>
+
+    <!-- string_to_array 只针对postgresql，与mysql中find_in_set 类似   -->
+    <select id="findByIdInSet" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM <include refid="table_station_relation"/> WHERE CAST(#{stationId} AS VARCHAR) = ANY(string_to_array(upper_id_set, ','))
+    </select>
+
+    <select id="findByCurUpperMigUpperStation" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM <include refid="table_station_relation"/>
+        WHERE cur_station_id=#{curStationId} AND upper_id=#{upperId}
+          AND CAST(#{migUpperId} AS VARCHAR) = ANY(string_to_array(upper_id_set, ','))
+    </select>
+
+</mapper>

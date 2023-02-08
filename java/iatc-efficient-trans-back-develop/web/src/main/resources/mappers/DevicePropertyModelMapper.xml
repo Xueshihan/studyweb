@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.iatc.web.mapper.DevicePropertyModelMapper" >
+    <resultMap id="BaseResultMap" type="cn.iatc.database.entity.DevicePropertyModel" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="device_type_id" property="deviceTypeId" jdbcType="BIGINT" />
+        <result column="base_property_id" property="basePropertyId" jdbcType="BIGINT" />
+        <result column="point_flag" property="pointFlag" jdbcType="INTEGER" />
+    </resultMap>
+
+    <sql id="baseSql">
+        id, device_type_id, base_property_id, point_flag
+    </sql>
+
+    <sql id="table_device_property_model">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_DEVICE_PROPERTY_MODEL}]]>
+    </sql>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM <include refid="table_device_property_model"/> WHERE id=#{id}
+    </select>
+
+
+</mapper>

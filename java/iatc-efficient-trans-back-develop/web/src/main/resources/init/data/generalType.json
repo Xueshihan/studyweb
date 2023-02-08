@@ -1,0 +1,14 @@
+[
+  {
+    "name": "油浸式电力",
+    "code": "bianyaqi-youjin",
+    "base_type": "bianyaqi",
+    "sort": 1
+  },
+  {
+    "name": "干式电力",
+    "code": "bianyaqi-ganshi",
+    "base_type": "bianyaqi",
+    "sort": 1
+  }
+]

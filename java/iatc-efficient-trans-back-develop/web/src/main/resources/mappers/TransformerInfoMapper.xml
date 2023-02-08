@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.iatc.web.mapper.TransformerInfoMapper" >
+    <resultMap id="BaseResultMap" type="cn.iatc.database.entity.TransformerInfo" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="station_id" property="stationId" jdbcType="BIGINT" />
+        <result column="sbmc" property="sbmc" jdbcType="VARCHAR" />
+        <result column="edrl" property="edrl" jdbcType="VARCHAR" />
+        <result column="zkdy" property="zkdy" jdbcType="VARCHAR" />
+        <result column="kzdl" property="kzdl" jdbcType="VARCHAR" />
+        <result column="dlsh" property="dlsh" jdbcType="VARCHAR" />
+        <result column="kzsh" property="kzsh" jdbcType="VARCHAR" />
+        <result column="dyb" property="dyb" jdbcType="VARCHAR" />
+        <result column="gyceddl" property="gyceddl" jdbcType="VARCHAR" />
+        <result column="yxbh" property="yxbh" jdbcType="VARCHAR" />
+        <result column="zxmc" property="zxmc" jdbcType="VARCHAR" />
+        <result column="ssgt" property="ssgt" jdbcType="VARCHAR" />
+        <result column="syxz" property="syxz" jdbcType="VARCHAR" />
+        <result column="ssds" property="ssds" jdbcType="VARCHAR" />
+        <result column="ywdw" property="ywdw" jdbcType="VARCHAR" />
+        <result column="whbz" property="whbz" jdbcType="VARCHAR" />
+        <result column="ssdkx" property="ssdkx" jdbcType="VARCHAR" />
+        <result column="gdqy" property="gdqy" jdbcType="VARCHAR" />
+        <result column="dydj" property="dydj" jdbcType="VARCHAR" />
+        <result column="dkxzx" property="dkxzx" jdbcType="VARCHAR" />
+        <result column="sbzt" property="sbzt" jdbcType="VARCHAR" />
+        <result column="tyrq" property="tyrq" javaType="java.util.Date" />
+        <result column="sfdw" property="sfdw" jdbcType="VARCHAR" />
+        <result column="sfnw" property="sfnw" jdbcType="VARCHAR" />
+        <result column="zycd" property="zycd" jdbcType="VARCHAR" />
+        <result column="zcxz" property="zcxz" jdbcType="VARCHAR" />
+        <result column="zcdw" property="zcdw" jdbcType="VARCHAR" />
+        <result column="zcbh" property="zcbh" jdbcType="VARCHAR" />
+        <result column="sbzjfs" property="sbzjfs" jdbcType="VARCHAR" />
+        <result column="xh" property="xh" jdbcType="VARCHAR" />
+        <result column="sccj" property="sccj" jdbcType="VARCHAR" />
+        <result column="ccbh" property="ccbh" jdbcType="VARCHAR" />
+        <result column="dxbm" property="dxbm" jdbcType="VARCHAR" />
+        <result column="ccrq" property="ccrq" javaType="java.util.Date" />
+        <result column="dxmc" property="dxmc" jdbcType="VARCHAR" />
+        <result column="jyjz" property="jyjz" jdbcType="VARCHAR" />
+        <result column="sffjb" property="sffjb" jdbcType="VARCHAR" />
+        <result column="wzkgfjds" property="wzkgfjds" jdbcType="VARCHAR" />
+        <result column="wzkgfjwz" property="wzkgfjwz" jdbcType="VARCHAR" />
+        <result column="xmmc" property="xmmc" jdbcType="VARCHAR" />
+        <result column="dyceddl" property="dyceddl" jdbcType="VARCHAR" />
+        <result column="xmbm" property="xmbm" jdbcType="VARCHAR" />
+        <result column="jddz" property="jddz" jdbcType="VARCHAR" />
+        <result column="yh" property="yh" jdbcType="VARCHAR" />
+        <result column="yz" property="yz" jdbcType="VARCHAR" />
+        <result column="zz" property="zz" jdbcType="VARCHAR" />
+        <result column="lx" property="lx" jdbcType="VARCHAR" />
+        <result column="jynrdj" property="jynrdj" jdbcType="VARCHAR" />
+        <result column="sbbm" property="sbbm" jdbcType="VARCHAR" />
+        <result column="djsj" property="djsj" javaType="java.util.Date" />
+        <result column="bz" property="bz" jdbcType="VARCHAR" />
+        <result column="ljzbh" property="ljzbh" jdbcType="VARCHAR" />
+        <result column="gnwz" property="gnwz" jdbcType="VARCHAR" />
+        <result column="swid" property="swid" jdbcType="VARCHAR" />
+        <result column="tzcjfs" property="tzcjfs" jdbcType="VARCHAR" />
+        <result column="ywsbzl" property="ywsbzl" jdbcType="VARCHAR" />
+        <result column="sfctsb" property="sfctsb" jdbcType="VARCHAR" />
+        <result column="pmbm" property="pmbm" jdbcType="VARCHAR" />
+        <result column="ssxlmc" property="ssxlmc" jdbcType="VARCHAR" />
+        <result column="zyfl" property="zyfl" jdbcType="VARCHAR" />
+        <result column="zltxsl" property="zltxsl" jdbcType="VARCHAR" />
+        <result column="sblxbm" property="sblxbm" jdbcType="VARCHAR" />
+        <result column="dydjmc" property="dydjmc" jdbcType="VARCHAR" />
+        <result column="dydjdm" property="dydjdm" jdbcType="VARCHAR" />
+        <result column="ssdkxid" property="ssdkxid" jdbcType="VARCHAR" />
+        <result column="dqtz" property="dqtz" jdbcType="VARCHAR" />
+        <result column="dkxzxid" property="dkxzxid" jdbcType="VARCHAR" />
+        <result column="dxmpyxkid" property="dxmpyxkid" jdbcType="VARCHAR" />
+        <result column="obj_id" property="objId" jdbcType="VARCHAR" />
+        <result column="enabled_status" property="enabledStatus" jdbcType="SMALLINT" />
+        <result column="created_time" property="createdTime" javaType="java.util.Date" />
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date" />
+
+    </resultMap>
+
+    <sql id="baseSql">
+        id, station_id, sbmc, edrl, zkdy, kzdl, dlsh, kzsh, dyb, gyceddl, yxbh, zxmc, ssgt,
+        syxz, ssds, ywdw, whbz, ssdkx, gdqy, dydj, dkxzx, sbzt, tyrq, sfdw, sfnw, zycd, zcxz, zcdw,
+        zcbh, sbzjfs, xh, sccj, ccbh, dxbm, ccrq, dxmc, jyjz, sffjb, wzkgfjds, wzkgfjwz, xmmc, dyceddl,
+        xmbm, jddz, yh, yz, zz, lx, jynrdj, sbbm, djsj, bz, ljzbh, gnwz, swid, tzcjfs, ywsbzl, sfctsb,
+        pmbm, ssxlmc, zyfl, zltxsl, sblxbm, dydjmc, dydjdm, ssdkxid, dqtz, dkxzxid, dxmpyxkid, obj_id,
+        enabled_status, created_time, updated_time
+    </sql>
+
+    <sql id="table_transformer_info">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_TRANSFORMER_INFO}]]>
+    </sql>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM <include refid="table_transformer_info"/> WHERE id=#{id} and enabled_status=1
+    </select>
+
+    <select id="findByStationId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM <include refid="table_transformer_info"/> WHERE station_id=#{stationId} and enabled_status=1
+    </select>
+
+    <select id="getEdrlByStationId" parameterType="java.lang.Long" resultType="String">
+        SELECT edrl FROM <include refid="table_transformer_info"/> WHERE station_id=#{stationId} and enabled_status=1 limit 1
+    </select>
+</mapper>

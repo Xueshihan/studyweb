@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.iatc.web.mapper.StationMapper" >
+    <resultMap id="BaseResultMap" type="cn.iatc.database.entity.Station" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="level" property="level" jdbcType="INTEGER" />
+        <result column="region_id" property="regionId" jdbcType="BIGINT" />
+        <result column="station_count" property="stationCount" jdbcType="INTEGER" />
+        <result column="capacity" property="capacity" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="pms_id" property="pmsId" jdbcType="VARCHAR" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="longitude" property="longitude" jdbcType="VARCHAR" />
+        <result column="latitude" property="latitude" jdbcType="VARCHAR" />
+        <result column="station_type_id" property="stationTypeId" jdbcType="BIGINT" />
+        <result column="general_type_id" property="generalTypeId" jdbcType="BIGINT" />
+        <result column="smart_time" property="smartTime" javaType="java.util.Date" />
+        <result column="running_status" property="runningStatus" jdbcType="SMALLINT" />
+        <result column="contact_name" property="contactName" jdbcType="VARCHAR" />
+        <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR" />
+        <result column="panoramaca_url" property="panoramacaUrl" jdbcType="VARCHAR" />
+        <result column="options" property="options" jdbcType="INTEGER" />
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="smart_status" property="smartStatus" jdbcType="SMALLINT" />
+        <result column="enabled_status" property="enabledStatus" jdbcType="SMALLINT" />
+        <result column="created_time" property="createdTime" javaType="java.util.Date" />
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date" />
+
+        <!--  association 关联的方法不能用orm，需要用语句查      -->
+        <association property="region" javaType="cn.iatc.database.entity.Region" column="region_id"
+                     select="cn.iatc.web.mapper.RegionMapper.findById"/>
+
+        <association property="stationType" javaType="cn.iatc.database.entity.StationType" column="station_type_id"
+                     select="cn.iatc.web.mapper.StationTypeMapper.findById"/>
+
+        <association property="generalType" javaType="cn.iatc.database.entity.GeneralType" column="general_type_id"
+                     select="cn.iatc.web.mapper.GeneralTypeMapper.findById"/>
+
+    </resultMap>
+
+    <resultMap id="BuildingResultMap" type="cn.iatc.web.bean.station.StationTreeNode">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="level" property="level" jdbcType="INTEGER" />
+        <result column="region_id" property="regionId" jdbcType="BIGINT" />
+        <result column="station_count" property="stationCount" jdbcType="INTEGER" />
+        <result column="capacity" property="capacity" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="pms_id" property="pmsId" jdbcType="VARCHAR" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="longitude" property="longitude" jdbcType="VARCHAR" />
+        <result column="latitude" property="latitude" jdbcType="VARCHAR" />
+        <result column="station_type_id" property="stationTypeId" jdbcType="BIGINT" />
+        <result column="general_type_id" property="generalTypeId" jdbcType="BIGINT" />
+        <result column="smart_time" property="smartTime" javaType="java.util.Date" />
+        <result column="running_status" property="runningStatus" jdbcType="SMALLINT" />
+        <result column="contact_name" property="contactName" jdbcType="VARCHAR" />
+        <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR" />
+        <result column="panoramaca_url" property="panoramacaUrl" jdbcType="VARCHAR" />
+        <result column="power_env_flag" property="powerEnvFlag" jdbcType="SMALLINT" />
+        <result column="gateway_flag" property="gatewayFlag" jdbcType="SMALLINT" />
+        <result column="onlands_flag" property="onlandsFlag" jdbcType="SMALLINT" />
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="smart_status" property="smartStatus" jdbcType="SMALLINT" />
+        <result column="created_time" property="createdTime" javaType="java.util.Date" />
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date" />
+        <result column="upper_id" property="parentId" jdbcType="BIGINT"/>
+
+        <!--  association 关联的方法不能用orm，需要用语句查      -->
+        <association property="region" javaType="cn.iatc.database.entity.Region" column="region_id"
+                     select="cn.iatc.web.mapper.RegionMapper.findById"/>
+
+        <association property="stationType" javaType="cn.iatc.database.entity.StationType" column="station_type_id"
+                     select="cn.iatc.web.mapper.StationTypeMapper.findById"/>
+
+        <association property="generalType" javaType="cn.iatc.database.entity.GeneralType" column="general_type_id"
+                     select="cn.iatc.web.mapper.GeneralTypeMapper.findById"/>
+    </resultMap>
+
+    <sql id="table_station">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_STATION}]]>
+    </sql>
+
+    <sql id="table_station_relation">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_STATION_RELATION}]]>
+    </sql>
+
+    <!--可用状态-->
+    <sql id="enabled">
+        ${@cn.iatc.web.constants.CommonConstants@ENABLED}
+    </sql>
+
+    <!--不可用状态-->
+    <sql id="disabled">
+        ${@cn.iatc.web.constants.CommonConstants@DISABLED}
+    </sql>
+
+    <!--动环-->
+    <sql id="powerEnvFlag">
+        ${@cn.iatc.database.entity.Station@POWER_ENV}
+    </sql>
+    <!--网关-->
+    <sql id="gatewayFlag">
+        ${@cn.iatc.database.entity.Station@GATEWAY}
+    </sql>
+
+    <!--地上-->
+    <sql id="onlandsFlag" >
+        ${@cn.iatc.database.entity.Station@ON_LANDS}
+    </sql>
+
+    <sql id="baseSql">
+        id, code, name, level, region_id, station_count, capacity, remark, pms_id, address, longitude, latitude, station_type_id,
+        general_type_id, smart_time, running_status, contact_name, contact_phone, panoramaca_url, options, sort, smart_status,
+        enabled_status, created_time, updated_time
+    </sql>
+
+    <sql id="insertSql">
+        code, name, level, region_id, enabled_status, created_time, updated_time
+    </sql>
+
+    <!-- ognl写法，读取java中常用变量   -->
+    <sql id="treeSql">
+        b.id, b.code, b.name, b.level, b.region_id, b.station_count, b.capacity, b.remark, b.pms_id, b.address, b.longitude, b.latitude, b.station_type_id,
+        b.general_type_id, b.smart_time, b.running_status, b.contact_name, b.contact_phone, b.panoramaca_url,
+        CASE b.options <![CDATA[&]]> <include refid="powerEnvFlag"/> WHEN <include refid="powerEnvFlag"/> THEN <include refid="enabled"/> ELSE <include refid="disabled"/> END AS power_env_flag,
+        CASE b.options <![CDATA[&]]> <include refid="gatewayFlag"/> WHEN <include refid="gatewayFlag"/> THEN <include refid="enabled"/> ELSE <include refid="disabled"/> END AS gateway_flag,
+        CASE b.options <![CDATA[&]]> <include refid="onlandsFlag"/> WHEN <include refid="onlandsFlag"/> THEN <include refid="enabled"/> ELSE <include refid="disabled"/> END AS onlands_flag,
+        b.sort, b.smart_status, b.created_time, b.updated_time, a.upper_id
+    </sql>
+
+    <insert id="createStations" >
+        INSERT INTO <include refid="table_station"/> (<include refid="insertSql"/>) VALUES
+        <foreach collection="stations" item="item" index="index" separator=",">
+            (#{item.code}, #{item.name}, #{item.level}, #{item.regionId}, #{item.enabledStatus}, #{item.createdTime}, #{item.updatedTime})
+        </foreach>
+    </insert>
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM <include refid="table_station"/> WHERE id=#{id}
+    </select>
+
+    <select id="findTreeByLevels" resultMap="BuildingResultMap">
+        SELECT <include refid="treeSql"/> FROM <include refid="table_station_relation"/> AS a
+        LEFT JOIN <include refid="table_station"/> AS b ON b.id = a.cur_station_id
+        WHERE b.level IN
+        <foreach collection="levels" item="level" index="index" open="(" close=")" separator=",">
+            #{level}
+        </foreach>
+        AND b.enabled_status=1
+    </select>
+
+    <select id="findTreeListByIdLevels" resultMap="BuildingResultMap">
+        SELECT <include refid="treeSql"/> FROM <include refid="table_station_relation"/> AS a
+        LEFT JOIN <include refid="table_station"/> AS b ON b.id = a.cur_station_id
+        WHERE b.level IN
+          <foreach collection="levels" item="level" index="index" open="(" close=")" separator=",">
+            #{level}
+          </foreach>
+        AND (a.cur_station_id=#{id} OR CAST(#{id} AS VARCHAR) = ANY(string_to_array(a.upper_id_set, ',')))
+    </select>
+
+    <!--     查找当前id下的所有结构，isSelf是否需要id那层-->
+    <select id="findTreeNextListById" resultMap="BuildingResultMap">
+        SELECT <include refid="treeSql"/> FROM <include refid="table_station_relation"/> AS a
+        LEFT JOIN <include refid="table_station"/> AS b ON b.id = a.cur_station_id
+        WHERE CAST(#{id} AS VARCHAR) = ANY(string_to_array(a.upper_id_set, ','))
+        <if test="isSelf">
+            OR a.cur_station_id=#{id}
+        </if>
+    </select>
+
+
+    <select id="findTreeNextChildById" resultMap="BuildingResultMap">
+        SELECT <include refid="treeSql"></include> FROM <include refid="table_station_relation"/> AS a
+        LEFT JOIN <include refid="table_station"/> AS b ON b.id = a.cur_station_id
+        WHERE a.upper_id=#{id}
+    </select>
+
+
+</mapper>

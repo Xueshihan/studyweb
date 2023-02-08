@@ -1,22 +1,27 @@
+server:
+  port: 80
 
-#spring:
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://192.168.3.52:3306/xsh_db?serverTimezone=UTC
-#    username: root
-#    password: Iatc@2022
-#    type: com.alibaba.druid.pool.DruidDataSource
-
-mybatis-plus:
-  global-config:
-    db-config:
-      table-prefix: tbl_
 spring:
   datasource:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://192.168.3.52:3306/xsh_db?serverTimezone=UTC
       username: root
-      password: Iatc@2022
-server:
-  port: 80
+      password: root
+  thymeleaf:
+    option: classpath:/static/pages/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    cache: false
+    servlet:
+      content-type: text/html
+
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: tbl_
+      id-type: auto
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+

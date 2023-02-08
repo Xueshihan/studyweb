@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.iatc.web.mapper.RoleMenuMapper" >
+    <resultMap id="BaseResultMap" type="cn.iatc.database.entity.RoleMenu" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="role_id" property="roleId" jdbcType="BIGINT" />
+        <result column="menu_id" property="menuId" jdbcType="BIGINT" />
+    </resultMap>
+    <sql id="baseSql">
+        id, role_id, menu_id
+    </sql>
+
+    <sql id="insertSql">
+        role_id, menu_id
+    </sql>
+
+    <sql id="table_role">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_ROLE_MENU}]]>
+    </sql>
+    <insert id="createBatch" >
+        INSERT INTO <include refid="table_role"/> (<include refid="insertSql"/>)
+        VALUES
+        <foreach collection="roleMenuList" item="item" index="index" separator=",">
+            (#{item.roleId}, #{item.menuId})
+        </foreach>
+
+    </insert>
+
+
+</mapper>

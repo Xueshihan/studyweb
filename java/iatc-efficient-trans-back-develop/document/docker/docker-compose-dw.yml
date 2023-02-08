@@ -1,0 +1,95 @@
+version: '3'
+services:
+  transformer-nginx:
+    container_name: transformer-nginx
+    image: nginx:latest
+    ports:
+      - 38880:80
+    volumes:
+      - /data/transformer/data/nginx/html/dist:/etc/nginx/html/
+      - /data/transformer/data/nginx/app:/etc/nginx/app/app
+      - /data/transformer/conf/nginx:/etc/nginx/conf.d
+    environment:
+      - TZ=Asia/Shanghai
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+
+  timescaledb:
+    image: timescale/timescaledb:latest-pg14
+    container_name: timescaledb
+    environment:
+        - POSTGRES_USER=root
+        - POSTGRES_PASSWORD=root
+        - TZ=Asia/Shanghai
+    ports:
+      - 35438:5432
+    volumes:
+      - /data/transformer/conf/postgresql/root:/root
+      - /data/transformer/data/postgresql/data:/var/lib/postgresql/data # 数据库位置
+      - /data/transformer/data/postgresql/archive:/archive  # 备份文件位置
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+
+  transformer-redis:
+    image: redis:latest
+    container_name: transformer-redis
+    volumes:
+      - /data/transformer/data/redis/data:/data
+      - /data/transformer/conf/redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - /data/transformer/logs/redis/logs:/logs
+    ports:
+      - 36379:6379
+    environment:
+      - TZ=Asia/Shanghai
+    restart: always
+    command: redis-server --requirepass Iatc@2022
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+
+  efficient-trans:
+    image: efficient-trans
+    container_name: efficient-trans
+    environment:
+      - TZ=Asia/Shanghai
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - 38080:8080
+    volumes:
+      - /data/transformer/logs/web:/efficient_trans/logs
+      - /data/transformer/data/web/app.jar:/efficient_trans/app.jar
+      - /data/transformer/data/web/config:/efficient_trans/config
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+
+  efficient-trans-mqtt:
+    image: efficient-trans
+    container_name: efficient-trans-mqtt
+    environment:
+      - TZ=Asia/Shanghai
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - 38081:8080
+    volumes:
+      - /data/transformer/logs/mqtt_server:/efficient_trans/logs
+      - /data/transformer/data/mqtt_server/app.jar:/efficient_trans/app.jar
+      - /data/transformer/data/mqtt_server/config:/efficient_trans/config
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"

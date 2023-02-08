@@ -1,0 +1,65 @@
+[
+  {
+    "name": "Home",
+    "title": "首页",
+    "icon": "el-icon-s-home",
+    "path": "/home",
+    "type": 1,
+    "children": []
+  },
+  {
+    "name": "Monitor",
+    "title": "运行损耗监测",
+    "icon": "el-icon-s-platform",
+    "path": "/monitor/index",
+    "type": 2,
+    "children": []
+  },
+  {
+    "name": "WasteAnalysis",
+    "title": "多维度损耗分析",
+    "icon": "el-icon-s-marketing",
+    "path": "/wasteAnalysis",
+    "type": 3,
+    "children": []
+  },
+  {
+    "name": "StatisticsReport",
+    "title": "统计分析报告",
+    "icon": "el-icon-document-copy",
+    "path": "/statisticsReport",
+    "type": 4,
+    "children": []
+  },
+  {
+    "name": "HistoryData",
+    "title": "历史数据查询",
+    "icon": "el-icon-document-add",
+    "path": "/historyData",
+    "type": 5,
+    "children": []
+  },
+  {
+    "name": "BaseData",
+    "title": "基础数据管理",
+    "icon": "el-icon-document-add",
+    "path": "/baseData",
+    "type": 6,
+    "children": []
+  },
+  {
+    "name": "System",
+    "title": "系统设置",
+    "icon": "el-icon-s-tools",
+    "path": "/system",
+    "type": 7,
+    "children": [{
+      "name": "Role",
+      "title": "角色管理",
+      "icon": "",
+      "path": "/system/role/index",
+      "type": 90,
+      "children": []
+    }]
+  }
+]

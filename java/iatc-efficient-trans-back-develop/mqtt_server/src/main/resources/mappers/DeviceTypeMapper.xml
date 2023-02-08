@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.iatc.mqtt_server.mapper.DeviceTypeMapper" >
+    <resultMap id="BaseResultMap" type="cn.iatc.database.entity.DeviceType" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="base_device_id" property="baseDeviceId" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="property" property="property" jdbcType="VARCHAR" />
+        <result column="source" property="source" jdbcType="VARCHAR" />
+        <result column="type_classify" property="typeClassify" jdbcType="VARCHAR" />
+        <result column="factory_id" property="factoryId" jdbcType="BIGINT" />
+        <result column="mark" property="mark" jdbcType="VARCHAR" />
+        <result column="period" property="period" jdbcType="INTEGER" />
+        <result column="delay" property="delay" jdbcType="INTEGER" />
+        <result column="timeout" property="timeout" jdbcType="INTEGER" />
+        <result column="func_flag" property="funcFlag" jdbcType="INTEGER" />
+        <result column="comm_flag" property="commFlag" jdbcType="INTEGER" />
+        <result column="enabled_status" property="enabledStatus" jdbcType="SMALLINT" />
+        <result column="created_time" property="createdTime" javaType="java.util.Date" />
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date" />
+
+        <association property="baseDevice" javaType="cn.iatc.database.entity.BaseDevice" column="base_device_id"
+                     select="cn.iatc.mqtt_server.mapper.BaseDeviceMapper.findById"/>
+    </resultMap>
+
+    <!--可用状态-->
+    <sql id="enabled">
+        ${@cn.iatc.mqtt_server.constants.CommonConstants@ENABLED}
+    </sql>
+
+    <sql id="baseSql">
+        id, base_device_id, name, property, source, type_classify, factory_id, mark, period, delay, timeout, func_flag,
+        comm_flag, enabled_status, created_time, updated_time
+    </sql>
+
+    <sql id="table_device_type">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_DEVICE_TYPE}]]>
+    </sql>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM <include refid="table_device_type"/> WHERE id=#{id}
+    </select>
+
+    <select id="findListByFactory" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM <include refid="table_device_type"/> WHERE factory_id=#{factoryId}
+                AND enabled_status=<include refid="enabled"/>
+    </select>
+
+
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.iatc.web.mapper.OilTransformerEfficiencyMapper" >
+    <resultMap id="BaseResultMap" type="cn.iatc.database.entity.OilTransformerEfficiency" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="level" property="level" jdbcType="SMALLINT" />
+        <result column="sffjb" property="sffjb" jdbcType="VARCHAR" />
+        <result column="edrl" property="edrl" jdbcType="VARCHAR" />
+        <result column="kzsh" property="kzsh" jdbcType="VARCHAR" />
+        <result column="ljzbh" property="ljzbh" jdbcType="VARCHAR" />
+        <result column="fzsh" property="fzsh" jdbcType="VARCHAR" />
+        <result column="dlzk" property="dlzk" jdbcType="VARCHAR" />
+        <result column="enabled_status" property="enabledStatus" jdbcType="SMALLINT" />
+        <result column="created_time" property="createdTime" javaType="java.util.Date" />
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date" />
+
+    </resultMap>
+
+    <resultMap id="GetKzshMap" type="cn.iatc.web.bean.transformer.OilTransformerEfficiencyPojo" >
+        <result column="level" property="level" jdbcType="SMALLINT" />
+        <result column="kzsh" property="kzsh" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="baseSql">
+        id, level, sffjb, edrl, kzsh, ljzbh, fzsh, dlzk , enabled_status, created_time , updated_time
+    </sql>
+
+    <sql id="table_oil_transformer_efficiency">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_OIL_TRANSFORMER_EFFICIENCY}]]>
+    </sql>
+    <sql id="table_transformer_info">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_TRANSFORMER_INFO}]]>
+    </sql>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM <include refid="table_oil_transformer_efficiency"/> WHERE id=#{id} and enabled_status=1
+    </select>
+
+    <select id="getKzsh" parameterType="java.lang.Long" resultMap="GetKzshMap">
+        SELECT level,kzsh FROM <include refid="table_oil_transformer_efficiency"/> WHERE
+        edrl = (SELECT edrl FROM <include refid="table_transformer_info"/> WHERE station_id=#{stationId} and enabled_status=1)
+        and ljzbh = (SELECT ljzbh FROM <include refid="table_transformer_info"/> WHERE station_id=#{stationId} and enabled_status=1)
+        and sffjb = (SELECT sffjb FROM <include refid="table_transformer_info"/> WHERE station_id=#{stationId} and enabled_status=1)
+        and enabled_status=1
+    </select>
+
+</mapper>

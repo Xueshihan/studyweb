@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.iatc.web.mapper.RegionMapper" >
+    <resultMap id="BaseResultMap" type="cn.iatc.database.entity.Region" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="pinyin" property="pinyin" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="adcode" property="adCode" jdbcType="VARCHAR" />
+        <result column="upper_id" property="upperId" jdbcType="BIGINT" />
+        <result column="upper_id_set" property="upperIdSet" jdbcType="VARCHAR" />
+        <result column="level" property="level" jdbcType="INTEGER" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="national_code" property="nationalCode" jdbcType="VARCHAR" />
+        <result column="longitude" property="longitude" jdbcType="VARCHAR" />
+        <result column="latitude" property="latitude" jdbcType="VARCHAR" />
+        <result column="enabled_status" property="enabledStatus" jdbcType="SMALLINT" />
+        <result column="created_time" property="createdTime" javaType="java.util.Date" />
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date" />
+    </resultMap>
+
+    <resultMap id="RegionItemMap" type="cn.iatc.web.bean.region.RegionPojo" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="pinyin" property="pinyin" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="adcode" property="adCode" jdbcType="VARCHAR" />
+        <result column="upper_id" property="upperId" jdbcType="BIGINT" />
+        <result column="upper_name" property="upperName" jdbcType="BIGINT" />
+        <result column="level" property="level" jdbcType="INTEGER" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="national_code" property="nationalCode" jdbcType="VARCHAR" />
+        <result column="longitude" property="longitude" jdbcType="VARCHAR" />
+        <result column="latitude" property="latitude" jdbcType="VARCHAR" />
+        <result column="station_id" property="stationId" jdbcType="BIGINT" />
+        <result column="station_code" property="stationCode" jdbcType="VARCHAR" />
+        <result column="station_name" property="stationName" jdbcType="VARCHAR" />
+        <result column="created_time" property="createdTime" javaType="java.util.Date" />
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date" />
+    </resultMap>
+
+    <sql id="baseSql">
+        id, name, pinyin, code, adcode, upper_id, upper_id_set, level, sort, national_code, longitude, latitude, enabled_status,
+        created_time, updated_time
+    </sql>
+
+    <sql id="table_station">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_STATION}]]>
+    </sql>
+
+    <sql id="table_region">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_REGION}]]>
+    </sql>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM <include refid="table_region"/> WHERE id=#{id}
+    </select>
+
+    <select id="findListLike" resultMap="RegionItemMap">
+        SELECT a.id, a.name, a.pinyin, a.code, a.adcode, a.upper_id, (SELECT name FROM t_region WHERE id=a.upper_id) AS upper_name,
+               a.level, a.sort, a.national_code, a.longitude, a.latitude, a.created_time, a.updated_time, b.id AS station_id,
+               b.code as station_code, b.name AS station_name FROM <include refid="table_region"/> AS a
+        LEFT JOIN <include refid="table_station"/> AS b ON b.region_id = a.id
+        WHERE a.enabled_status=1 AND (b.enabled_status=1 OR b.enabled_status IS NULL)
+        <if test="level != null">
+            AND a.level = #{level}
+        </if>
+        <if test="name != null and name != ''">
+            AND a.name LIKE '%${name}%'
+        </if>
+        ORDER BY sort ASC
+    </select>
+
+</mapper>

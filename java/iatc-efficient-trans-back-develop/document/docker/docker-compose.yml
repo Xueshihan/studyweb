@@ -1,0 +1,44 @@
+version: '3'
+services:
+  timescaledb:
+    image: timescale/timescaledb:latest-pg14
+    container_name: test_timescaledb
+    restart: always
+    environment:
+        - POSTGRES_USER=root
+        - POSTGRES_PASSWORD=root
+        - TZ=Asia/Shanghai
+    ports:
+      - 5438:5432
+    volumes:
+      - ${PWD}/postgres/data:/var/lib/postgresql/data # 数据库位置
+      - ${PWD}/postgres/archive:/archive  # 备份文件位置
+    networks:
+      - iatc_network
+      - default # 默认网段，所在文件_default
+
+  efficient-trans:
+    image: efficient-trans
+    container_name: efficient-trans
+    environment:
+      - TZ=Asia/Shanghai
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - 8082:8080
+    volumes:
+      - ${PWD}:/efficient_trans
+    networks:
+      - lims_default
+      - iatc_network
+      - default # 默认网段，所在文件_default
+
+# 设置网段信息
+networks:
+  iatc_network:
+    external: #使用已存在的网络
+      name: iatc_network
+  lims_default: # 为了redis连接
+    external:
+      name: lims_default

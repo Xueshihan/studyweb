@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.iatc.web.mapper.SystemConfigurationMapper" >
+    <resultMap id="BaseResultMap" type="cn.iatc.database.entity.SystemConfiguration" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="value" property="value" jdbcType="VARCHAR" />
+        <result column="enabled_status" property="enabledStatus" jdbcType="SMALLINT" />
+        <result column="created_time" property="createdTime" javaType="java.util.Date" />
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date" />
+    </resultMap>
+
+    <sql id="baseSql">
+        id, type, value, enabled_status, created_time, updated_time
+    </sql>
+
+    <sql id="table_system_configuration">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_SYSTEM_CONFIGURATION}]]>
+    </sql>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM <include refid="table_system_configuration"/> WHERE id=#{id}
+    </select>
+
+</mapper>

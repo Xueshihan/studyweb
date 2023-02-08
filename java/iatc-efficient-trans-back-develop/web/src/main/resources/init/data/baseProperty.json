@@ -1,0 +1,47 @@
+[
+  {
+    "name": "A相电压",
+    "property": "PhV_phsA",
+    "sort": 1
+  },
+  {
+    "name": "B相电压",
+    "property": "PhV_phsB",
+    "sort": 1
+  },
+  {
+    "name": "C相电压",
+    "property": "PhV_phsC",
+    "sort": 1
+  },
+  {
+    "name": "A相电流",
+    "property": "A_phsA",
+    "sort": 1
+  },
+  {
+    "name": "B相电流",
+    "property": "A_phsB",
+    "sort": 1
+  },
+  {
+    "name": "C相电流",
+    "property": "A_phsC",
+    "sort": 1
+  },
+  {
+    "name": "A相功率因数",
+    "property": "PhPF_phsA",
+    "sort": 1
+  },
+  {
+    "name": "B相功率因数",
+    "property": "PhPF_phsB",
+    "sort": 1
+  },
+  {
+    "name": "C相功率因数",
+    "property": "PhPF_phsC",
+    "sort": 1
+  }
+]

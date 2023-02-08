@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.iatc.web.mapper.DeviceMapper" >
+    <resultMap id="BaseResultMap" type="cn.iatc.database.entity.Device" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="sn" property="sn" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="capacity" property="capacity" jdbcType="VARCHAR" />
+        <result column="point_id" property="pointId" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="device_type_id" property="deviceTypeId" jdbcType="BIGINT" />
+        <result column="gateway_id" property="gatewayId" jdbcType="VARCHAR" />
+        <result column="online_status" property="onlineStatus" jdbcType="SMALLINT" />
+        <result column="enabled_status" property="enabledStatus" jdbcType="SMALLINT" />
+        <result column="created_time" property="createdTime" javaType="java.util.Date" />
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date" />
+
+        <association property="deviceType" javaType="cn.iatc.database.entity.DeviceType" column="device_type_id"
+                     select="cn.iatc.web.mapper.DeviceTypeMapper.findById"/>
+    </resultMap>
+
+    <resultMap id="DevicePojoResultMap" type="cn.iatc.web.bean.device.DevicePojo" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="sn" property="sn" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="capacity" property="capacity" jdbcType="VARCHAR" />
+        <result column="point_id" property="pointId" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="device_type_id" property="deviceTypeId" jdbcType="BIGINT" />
+        <result column="gateway_id" property="gatewayId" jdbcType="VARCHAR" />
+        <result column="online_status" property="onlineStatus" jdbcType="SMALLINT" />
+        <result column="station_id" property="stationId" jdbcType="BIGINT" />
+        <result column="enabled_status" property="enabledStatus" jdbcType="SMALLINT" />
+        <result column="created_time" property="createdTime" javaType="java.util.Date" />
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date" />
+
+        <association property="deviceType" javaType="cn.iatc.database.entity.DeviceType" column="device_type_id"
+                     select="cn.iatc.web.mapper.DeviceTypeMapper.findById"/>
+
+        <association property="station" javaType="cn.iatc.database.entity.Station" column="station_id"
+                     select="cn.iatc.web.mapper.StationMapper.findById"/>
+    </resultMap>
+
+    <!--可用状态-->
+    <sql id="enabled">
+        ${@cn.iatc.web.constants.CommonConstants@ENABLED}
+    </sql>
+
+    <!-- 表名   -->
+    <sql id="table_device">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_DEVICE}]]>
+    </sql>
+
+    <sql id="table_device_station">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_DEVICE_STATION}]]>
+    </sql>
+
+    <sql id="table_device_type">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_DEVICE_TYPE}]]>
+    </sql>
+
+    <sql id="table_base_device">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_BASE_DEVICE}]]>
+    </sql>
+
+    <!-- 用的字段   -->
+    <sql id="baseSql">
+        id, sn, name, capacity, point_id, remark, address, device_type_id, gateway_id, online_status, enabled_status, created_time, updated_time
+    </sql>
+
+    <sql id="pojoSql">
+        a.id, a.sn, a.name, a.capacity, a.point_id, a.remark, a.address, a.device_type_id, a.gateway_id, a.online_status, b.station_id,
+        a.enabled_status, a.created_time, a.updated_time
+    </sql>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM <include refid="table_device"/> WHERE id=#{id}
+    </select>
+
+    <select id="findListByNameBase" resultMap="DevicePojoResultMap">
+        SELECT <include refid="pojoSql"/> FROM <include refid="table_device"/> AS a
+        LEFT JOIN <include refid="table_device_station"/> AS b ON b.device_id=a.id
+        LEFT JOIN <include refid="table_device_type"/> AS c ON c.id = a.device_type_id
+        WHERE a.enabled_status = <include refid="enabled"/>
+        <if test="name != null and name != ''">
+            AND a.name LIKE '%${name}%'
+        </if>
+        <if test="baseDeviceId != null and baseDeviceId > 0">
+            AND c.base_device_id=#{baseDeviceId}
+        </if>
+    </select>
+
+    <select id="findListByStation" resultMap="DevicePojoResultMap">
+        SELECT <include refid="pojoSql"/> FROM <include refid="table_device"/> AS a
+        LEFT JOIN <include refid="table_device_station"/> AS b ON b.device_id=a.id
+        WHERE a.enabled_status = <include refid="enabled"/> AND b.station_id=#{stationId}
+    </select>
+
+</mapper>

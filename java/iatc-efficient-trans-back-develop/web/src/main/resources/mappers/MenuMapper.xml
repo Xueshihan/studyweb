@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.iatc.web.mapper.MenuMapper" >
+    <resultMap id="BaseResultMap" type="cn.iatc.database.entity.Menu" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="path" property="path" jdbcType="VARCHAR" />
+        <result column="icon" property="icon" jdbcType="VARCHAR" />
+        <result column="upper_id" property="upperId" jdbcType="BIGINT" />
+        <result column="upper_id_set" property="upperIdSet" jdbcType="VARCHAR" />
+        <result column="enabled_status" property="enabledStatus" jdbcType="SMALLINT" />
+        <result column="created_time" property="createdTime" javaType="java.util.Date" />
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date" />
+    </resultMap>
+
+    <sql id="baseSql">
+        id, title, name, type, path, icon, upper_id, upper_id_set, enabled_status, created_time, updated_time
+    </sql>
+
+    <sql id="joinSql">
+        b.id, b.title, b.name, b.type, b.path, b.icon, b.upper_id, b.upper_id_set, b.enabled_status, b.created_time, b.updated_time
+    </sql>
+
+    <sql id="table_menu">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_MENU}]]>
+    </sql>
+
+    <sql id="table_role_menu">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_ROLE_MENU}]]>
+    </sql>
+
+    <select id="findListByRole" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="joinSql"/> FROM <include refid="table_role_menu"/> AS a
+        LEFT JOIN <include refid="table_menu"/> AS b ON b.id=a.menu_id
+        WHERE a.role_id=#{roleId}
+    </select>
+
+
+</mapper>

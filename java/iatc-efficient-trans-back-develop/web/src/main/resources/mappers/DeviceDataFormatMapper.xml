@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.iatc.web.mapper.DeviceDataFormatMapper" >
+    <resultMap id="BaseResultMap" type="cn.iatc.database.entity.DeviceDataFormat" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="device_type_id" property="deviceTypeId" jdbcType="BIGINT" />
+        <result column="base_property_id" property="basePropertyId" jdbcType="BIGINT" />
+        <result column="data_prefix" property="dataPrefix" jdbcType="VARCHAR" />
+        <result column="data_postfix" property="dataPostfix" jdbcType="VARCHAR" />
+        <result column="start_idx" property="startIdx" jdbcType="INTEGER" />
+        <result column="byte_cnt" property="byteCnt" jdbcType="INTEGER" />
+        <result column="data_scale" property="dataScale" jdbcType="INTEGER" />
+        <result column="ishbyte_right" property="ishbyteRight" jdbcType="SMALLINT" />
+        <result column="need_complement" property="needComplement" jdbcType="SMALLINT" />
+        <result column="ratio_val" property="ratioVal" jdbcType="VARCHAR" />
+        <result column="revise_val" property="reviseVal" jdbcType="VARCHAR" />
+        <result column="ishex" property="ishex" jdbcType="SMALLINT" />
+        <result column="isbin" property="isbin" jdbcType="SMALLINT" />
+        <result column="bin_idx" property="binIdx" jdbcType="SMALLINT" />
+        <result column="bin_cnt" property="binCnt" jdbcType="SMALLINT" />
+        <result column="hbit_only_sign" property="hbitOnlySign" jdbcType="SMALLINT" />
+        <result column="scale_type" property="scaleType" jdbcType="VARCHAR" />
+        <result column="value_range" property="valueRange" jdbcType="VARCHAR" />
+        <result column="options" property="options" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="enabled_status" property="enabledStatus" jdbcType="SMALLINT" />
+        <result column="created_time" property="createdTime" javaType="java.util.Date" />
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date" />
+    </resultMap>
+
+    <sql id="baseSql">
+        id, device_type_id, base_property_id, data_prefix, data_postfix, start_idx, byte_cnt, data_scale, ishbyte_right,
+        need_complement, ratio_val, revise_val, ishex, isbin, bin_idx, bin_cnt, hbit_only_sign, scale_type, value_range,
+        options, remark, enabled_status, created_time, updated_time
+    </sql>
+
+
+</mapper>

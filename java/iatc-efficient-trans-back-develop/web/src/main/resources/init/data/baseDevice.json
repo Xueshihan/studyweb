@@ -1,0 +1,132 @@
+[
+  {
+    "name": "智能门磁",
+    "property": "zhinengmenci",
+    "sort": 1
+  },
+  {
+    "name": "智能门禁",
+    "property": "zhinengmenjin",
+    "sort": 1
+  },
+  {
+    "name": "噪声",
+    "property": "zaosheng",
+    "sort": 1
+  },
+  {
+    "name": "烟雾",
+    "property": "yanwu",
+    "sort": 1
+  },
+  {
+    "name": "智能除湿",
+    "property": "zhinengchushi",
+    "sort": 1
+  },
+  {
+    "name": "低压分支",
+    "property": "diyafenzhi",
+    "sort": 1
+  },
+  {
+    "name": "电缆沟水位",
+    "property": "dianlangoushuiwei",
+    "sort": 1
+  },
+  {
+    "name": "黑匣子",
+    "property": "heixiazi",
+    "sort": 1
+  },
+  {
+    "name": "智能井盖",
+    "property": "zhinengjinggai",
+    "sort": 1
+  },
+  {
+    "name": "智能照明",
+    "property": "zhinengzhaoming",
+    "sort": 1
+  },
+  {
+    "name": "智能声光",
+    "property": "zhinengshengguang",
+    "sort": 1
+  },
+  {
+    "name": "智能开关",
+    "property": "zhinengkaiguan",
+    "sort": 1
+  },
+  {
+    "name": "智能风机",
+    "property": "zhinengfengji",
+    "sort": 1
+  },
+  {
+    "name": "智能水泵",
+    "property": "zhinengshuibeng",
+    "sort": 1
+  },
+  {
+    "name": "人脸识别",
+    "property": "renlianshibie",
+    "sort": 1
+  },
+  {
+    "name": "摄像头",
+    "property": "shexiangtou",
+    "sort": 1
+  },
+  {
+    "name": "电缆头温度",
+    "property": "dianlantouwendu",
+    "sort": 1
+  },
+  {
+    "name": "水浸",
+    "property": "shuijin",
+    "sort": 1
+  },
+  {
+    "name": "温湿度",
+    "property": "wenshidu",
+    "sort": 1
+  },
+  {
+    "name": "SF6",
+    "property": "SF6",
+    "sort": 1
+  },
+  {
+    "name": "智能低压开关",
+    "property": "zhinengdiyakaiguan",
+    "sort": 1
+  },
+  {
+    "name": "局放",
+    "property": "jufang",
+    "sort": 1
+  },
+  {
+    "name": "微断",
+    "property": "weiduan",
+    "sort": 1
+  },
+  {
+    "name": "智能电表",
+    "property": "zhinengdianbiao",
+    "sort": 1
+  },
+  {
+    "name": "蓄电池",
+    "property": "xudianchi",
+    "sort": 1
+  },
+  {
+    "name": "无线智能CT",
+    "property": "wuxianzhinengct",
+    "sort": 1
+  }
+]

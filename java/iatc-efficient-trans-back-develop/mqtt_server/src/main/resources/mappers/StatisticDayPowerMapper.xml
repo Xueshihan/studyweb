@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.iatc.mqtt_server.mapper.StatisticDayPowerMapper" >
+    <resultMap id="BaseResultMap" type="cn.iatc.database.entity.StatisticDayPower" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="station_id" property="stationId" jdbcType="BIGINT" />
+        <result column="phase" property="phase" jdbcType="SMALLINT" />
+        <result column="high_efficiency" property="highEfficiency" jdbcType="VARCHAR" />
+        <result column="low_efficiency" property="lowEfficiency" jdbcType="VARCHAR" />
+        <result column="active_power" property="activePower" jdbcType="VARCHAR" />
+        <result column="loss_power" property="lossPower" jdbcType="VARCHAR" />
+        <result column="year" property="year" jdbcType="INTEGER" />
+        <result column="month" property="month" jdbcType="INTEGER" />
+        <result column="day" property="day" jdbcType="INTEGER" />
+        <result column="enabled_status" property="enabledStatus" jdbcType="SMALLINT" />
+        <result column="created_time" property="createdTime" javaType="java.util.Date" />
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date" />
+    </resultMap>
+
+    <resultMap id="StatisticMonthMap" type="cn.iatc.mqtt_server.bean.statistic.StatisticPojo" >
+        <result column="station_id" property="stationId" jdbcType="BIGINT" />
+        <result column="phase" property="phase" jdbcType="SMALLINT" />
+        <result column="month" property="month" jdbcType="INTEGER" />
+        <result column="high_efficiency" property="highEfficiency" jdbcType="VARCHAR" />
+        <result column="low_efficiency" property="lowEfficiency" jdbcType="VARCHAR" />
+        <result column="active_power" property="activePower" jdbcType="VARCHAR" />
+        <result column="loss_power" property="lossPower" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="insertSql">
+        station_id, phase, high_efficiency, low_efficiency, active_power,
+        loss_power, year, month, day, enabled_status, created_time, updated_time
+    </sql>
+
+    <sql id="baseSql">
+        id, <include refid="insertSql"/>
+    </sql>
+
+    <sql id="table_statistic_day_power">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_STATISTIC_DAY_POWER}]]>
+    </sql>
+
+    <insert id="insertBatch">
+        INSERT INTO <include refid="table_statistic_day_power"/> (<include refid="insertSql"/>)
+        VALUES
+        <foreach collection="statisticPojoList" item="item" index="index" separator=",">
+            (#{item.stationId},#{item.phase}, #{item.highEfficiency}, #{item.lowEfficiency}, #{item.activePower}, #{item.lossPower},
+            #{item.year}, #{item.month}, #{item.day}, #{item.enabledStatus}, #{item.createdTime}, #{item.updatedTime})
+        </foreach>
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM <include refid="table_statistic_day_power"/> WHERE id=#{id}
+    </select>
+
+    <select id="statisticMonthData" resultMap="StatisticMonthMap">
+        SELECT station_id, phase, month, SUM(CAST(high_efficiency AS DECIMAL)) AS high_efficiency, SUM(CAST(low_efficiency AS DECIMAL)) AS low_efficiency,
+        SUM(CAST(active_power AS DECIMAL)) AS active_power, SUM(CAST(loss_power AS DECIMAL)) AS loss_power
+        FROM <include refid="table_statistic_day_power"/>
+        WHERE year=#{year} AND month=#{month}
+        GROUP BY station_id, phase, month
+    </select>
+
+
+</mapper>

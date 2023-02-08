@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.iatc.mqtt_server.mapper.RealTimePowerMapper" >
+    <resultMap id="BaseResultMap" type="cn.iatc.database.entity.RealTimePower" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="station_id" property="stationId" jdbcType="BIGINT" />
+        <result column="phase" property="phase" jdbcType="SMALLINT" />
+        <result column="high_current" property="highCurrent" jdbcType="VARCHAR" />
+        <result column="high_voltage" property="highVoltage" jdbcType="VARCHAR" />
+        <result column="low_current" property="lowCurrent" jdbcType="VARCHAR" />
+        <result column="low_voltage" property="lowVoltage" jdbcType="VARCHAR" />
+        <result column="power_factor" property="powerFactor" jdbcType="VARCHAR" />
+        <result column="high_efficiency" property="highEfficiency" jdbcType="VARCHAR" />
+        <result column="low_efficiency" property="lowEfficiency" jdbcType="VARCHAR" />
+        <result column="active_power" property="activePower" jdbcType="VARCHAR" />
+        <result column="loss_power" property="lossPower" jdbcType="VARCHAR" />
+        <result column="year" property="year" jdbcType="INTEGER" />
+        <result column="month" property="month" jdbcType="INTEGER" />
+        <result column="day" property="day" jdbcType="INTEGER" />
+        <result column="hour" property="hour" jdbcType="INTEGER" />
+        <result column="minute" property="minute" jdbcType="INTEGER" />
+        <result column="data_source" property="dataSource" jdbcType="INTEGER" />
+        <result column="enabled_status" property="enabledStatus" jdbcType="SMALLINT" />
+        <result column="created_time" property="createdTime" javaType="java.util.Date" />
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date" />
+    </resultMap>
+
+    <resultMap id="StatisticHourMap" type="cn.iatc.mqtt_server.bean.statistic.StatisticPojo" >
+        <result column="station_id" property="stationId" jdbcType="BIGINT" />
+        <result column="phase" property="phase" jdbcType="SMALLINT" />
+        <result column="hour" property="hour" jdbcType="INTEGER" />
+        <result column="high_efficiency" property="highEfficiency" jdbcType="VARCHAR" />
+        <result column="low_efficiency" property="lowEfficiency" jdbcType="VARCHAR" />
+        <result column="active_power" property="activePower" jdbcType="VARCHAR" />
+        <result column="loss_power" property="lossPower" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="StatisticDayMap" type="cn.iatc.mqtt_server.bean.statistic.StatisticPojo" >
+        <result column="station_id" property="stationId" jdbcType="BIGINT" />
+        <result column="phase" property="phase" jdbcType="SMALLINT" />
+        <result column="day" property="day" jdbcType="INTEGER" />
+        <result column="high_efficiency" property="highEfficiency" jdbcType="VARCHAR" />
+        <result column="low_efficiency" property="lowEfficiency" jdbcType="VARCHAR" />
+        <result column="active_power" property="activePower" jdbcType="VARCHAR" />
+        <result column="loss_power" property="lossPower" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="insertSql">
+        station_id, phase, high_current, high_voltage, low_current, low_voltage, power_factor, high_efficiency, low_efficiency, active_power,
+        loss_power, year, month, day, hour, minute, data_source, enabled_status, created_time, updated_time
+    </sql>
+
+    <sql id="baseSql">
+        id, <include refid="insertSql"/>
+    </sql>
+
+    <sql id="table_realtime_power">
+        <![CDATA[${@cn.iatc.database.constants.SqlConstants@TABLE_REALTIME_POWER}]]>
+    </sql>
+
+    <insert id="insertBatch">
+        INSERT INTO <include refid="table_realtime_power"/> (<include refid="insertSql"/>)
+        VALUES
+        <foreach collection="realTimePowerList" item="item" index="index" separator=",">
+            (#{item.stationId}, #{item.phase}, #{item.highCurrent}, #{item.highVoltage},  #{item.lowCurrent}, #{item.lowVoltage},
+            #{item.powerFactor}, #{item.highEfficiency}, #{item.lowEfficiency}, #{item.activePower}, #{item.lossPower},
+            #{item.year}, #{item.month}, #{item.day}, #{item.hour}, #{item.minute}, #{item.dataSource} #{item.enabledStatus}, #{item.createdTime}, #{item.updatedTime})
+        </foreach>
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM <include refid="table_realtime_power"/> WHERE id=#{id}
+    </select>
+
+    <select id="statisticHourData" resultMap="StatisticHourMap">
+        SELECT station_id, phase, hour, SUM(CAST(high_efficiency AS DECIMAL)) AS high_efficiency, SUM(CAST(low_efficiency AS DECIMAL)) AS low_efficiency,
+        SUM(CAST(active_power AS DECIMAL)) AS active_power, SUM(CAST(loss_power AS DECIMAL)) AS loss_power
+        FROM <include refid="table_realtime_power"/>
+        WHERE year=#{year} AND month=#{month} AND day=#{day}
+        GROUP BY station_id, phase, hour
+    </select>
+
+    <select id="statisticDayData" resultMap="StatisticDayMap">
+        SELECT station_id, phase, day, SUM(CAST(high_efficiency AS DECIMAL)) AS high_efficiency, SUM(CAST(low_efficiency AS DECIMAL)) AS low_efficiency,
+        SUM(CAST(active_power AS DECIMAL)) AS active_power, SUM(CAST(loss_power AS DECIMAL)) AS loss_power
+        FROM <include refid="table_realtime_power"/>
+        WHERE year=#{year} AND month=#{month} AND day=#{day}
+        GROUP BY station_id, phase, day
+    </select>
+
+
+</mapper>
